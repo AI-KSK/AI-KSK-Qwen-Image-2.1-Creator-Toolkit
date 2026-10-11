@@ -43,7 +43,7 @@ metadata:
 
 **编辑 (`Qwen/Qwen-Image-2.1-PE-I2I`):** 用动作指令开头，说清改什么和不改什么。只单图时自然提图像，不用 `<image1>`；多图时 **必须** 用 `<image1>`, `<image2>`…，逐一规定背景/主体/服装/材质/风格来源。编辑描述语言若用户以中文指令要求，应优先中文，英文指令用英文；图中的文字以用户明确的目标语言和字面为准。`wh_ratio` 与 `ratio_follow` 必须互斥。局部编辑禁止私自“清理”未指定部分；单纯换背景不许顺手改脸，换服装不许私自改姿态。
 
-PE 模型并非普通 Qwen3-VL 文本编码器；没有部署 PE checkpoint 时，可由 Agent 遵照官方公开规范起草/校对，但 **不得宣称执行了 PE 模型推理**。PE 正式 JSON 输出包含 `rewritten_prompt`, `wh_ratio`, `ratio_follow`（官方批处理还包装记录），核对语义再交给生成模型。官方执行文件：仓库 `prompt_rewrite/run_transformers.py`, `run_vllm.py`, `client.py`。
+PE 模型并非普通 Qwen3-VL 文本编码器；没有部署 PE checkpoint 时，可由 Agent 遵照官方公开规范起草/校对，但 **不得宣称执行了 PE 模型推理**。PE 正式 JSON 输出包含 `rewritten_prompt`, `wh_ratio`, `ratio_follow`（官方批处理还包装记录），核对语义再交给生成模型。官方执行文件位于**官方仓库** `QwenLM/Qwen-Image-2.1` 的 `prompt_rewrite/` 目录（`run_transformers.py`、`run_vllm.py`、`client.py`），**不在本仓库内**；来源链接见 `references/official_sources.md` 与 `references/pe_inference.md`。
 
 编辑场景所说的“提高分辨率/4K”是效果目标，不可承诺潜变量工作流必然输出真 4K；应执行图像尺寸和文件 alpha 校验。
 
@@ -125,6 +125,8 @@ Edit only the masked region of the source image while preserving all unmasked re
 
 ## 4. 脚本及使用
 
+以下命令一律**在技能目录内执行**（即 `SKILL.md` 所在目录，示例路径相对于该目录）。
+
 **静态演示不运行 GPU：**
 
 ```bash
@@ -143,6 +145,8 @@ python scripts/audit_comfyui.py --original assets/reference_11groups.json --upda
 ```
 
 `examples/t2i_poster.json` 的示例文本是**固定测试输入，不是独立 PE 模型推理输出**。注入脚本从 `positive_prompt` 读取内容，保留其它配置不变。指定不存在/重复节点时直接失败；严禁在未知工作流中猜节点。需要改变参考图数量、sampler、LoRA、mask 或 latent 必须进行专门节点连线改造并另行测试。
+
+`scripts/validate_task.py --check-file-existence` 可额外校验 **`input_images`** 的路径是否真实存在于磁盘。注意它**只检查 `input_images`**：`mask_path`、`control_image`、`reference_images` 仅做字段与形态检查，不校验文件是否存在。示例任务 JSON 中的图片路径都是占位符，因此对示例直接加该参数必然报缺失，这是预期行为。
 
 ## 5. 重点产品化玩法
 

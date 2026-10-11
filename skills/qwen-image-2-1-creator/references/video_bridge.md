@@ -14,4 +14,4 @@ Qwen Image 2.1 负责：人物/道具一致性母图、场景 Hero Shot、编辑
 
 视频提示词必须给出：主体运动、镜头运动、背景变化、物理约束、时间长度、帧率/分辨率（平台支持时）、身份锁定、停顿/转场、负面异常；镜头间继承上一个关键帧或同一身份母图。
 
-`video_handoff.py` 只写外部模型输入清单，不生成真实视频、不能代替实际 ComfyUI 视频工作流连接，也不自动调用 RunningHub API。
+`scripts/video_handoff.py` 只写外部模型输入清单，不生成真实视频、不能代替实际 ComfyUI 视频工作流连接，也不自动调用 RunningHub API。

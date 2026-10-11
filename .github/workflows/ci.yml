@@ -1,7 +1,9 @@
-name: Static workflow and skill checks
+name: Skill static checks
+
 on:
   push:
   pull_request:
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -13,9 +15,44 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Check 75-grid workflow JSON
-        run: python scripts/check_depth75.py
-      - name: Test repository package
-        run: python -m unittest discover -s tests -v
-      - name: Test Creator Skill
+
+      - name: Check SKILL.md frontmatter
+        run: |
+          python - <<'PY'
+          import pathlib, re, sys
+          p = pathlib.Path("skills/qwen-image-2-1-creator/SKILL.md")
+          text = p.read_text(encoding="utf-8")
+          if not text.startswith("---\n"):
+              sys.exit("SKILL.md does not start with YAML frontmatter")
+          end = text.index("\n---", 3)
+          fm = text[4:end]
+          problems = []
+          for key in ("name:", "description:", "compatibility:", "metadata:", "version:", "author:"):
+              if key not in fm:
+                  problems.append(f"missing frontmatter key: {key}")
+          if not re.search(r"^name:\s*qwen-image-2-1-creator\s*$", fm, re.M):
+              problems.append("frontmatter name must be qwen-image-2-1-creator")
+          if not re.search(r'version:\s*"?3\.0\.0"?', fm):
+              problems.append("skill version must be 3.0.0")
+          if problems:
+              sys.exit("; ".join(problems))
+          print("SKILL.md frontmatter OK")
+          PY
+
+      - name: Compile Python scripts
+        run: python -m compileall -q skills/qwen-image-2-1-creator/scripts
+
+      - name: Validate every example task
+        working-directory: skills/qwen-image-2-1-creator
+        run: |
+          for f in examples/*.json; do
+            echo "== $f"
+            python scripts/validate_task.py --task "$f"
+          done
+
+      - name: Generate a video handoff from the storyboard example
+        working-directory: skills/qwen-image-2-1-creator
+        run: python scripts/video_handoff.py --task examples/video_storyboard.json --output video_handoff.json
+
+      - name: Run Creator Skill unit tests
         run: python -m unittest discover -s skills/qwen-image-2-1-creator/tests -v

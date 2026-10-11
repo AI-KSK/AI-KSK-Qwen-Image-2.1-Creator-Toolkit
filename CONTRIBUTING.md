@@ -5,8 +5,14 @@
 ## 提交前
 
 1. 在 issue 里说明目的（错误、兼容版本、性能、对照实验）。
-2. 保留基准实验 75 组独立参数的可复现性；不要在“修正 bug”时暗改 Seed/Step/CFG/模型。
-3. 执行 `python scripts/check_depth75.py` 与 `python -m unittest discover -s tests -v`，需要时再执行 Skill tests。
+2. 复现报告请写清 Base / Turbo / LoRA 的具体文件与权重、seed、sampler、scheduler、CFG、steps、分辨率与执行平台；不要在“修正 bug”时顺带改动这些变量。
+3. 在技能目录内执行静态检查与单元测试：
+
+   ```bash
+   cd skills/qwen-image-2-1-creator
+   python scripts/validate_task.py --task examples/multi_edit.json
+   python -m unittest discover -s tests -v
+   ```
 4. 对每份改动说明“静态检查”还是“实际 GPU 运行已验证”；不能混用。
 5. PR 包含变更概述、受影响节点 ID、复现步骤、插件版本及授权信息。
 

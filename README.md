@@ -1,100 +1,225 @@
-# AI-KSK · Qwen Image 2.1 Creator Toolkit
+# AI-KSK · Qwen Image 2.1 Creator Skill
 
-**中文使用指南 | [English](README_EN.md)**
+**版本 3.0.0** ｜ [English README](README_EN.md)
 
-面向 **ComfyUI / RunningHub / Codex** 的 Qwen Image 2.1 工作流与创作工程工具包：包含一套 **Depth ControlNet Union 75 格三参数教学横评**、**AI-KSK Qwen Image 2.1 Creator Skill v3**，以及可离线运行的输入任务和 JSON 静态校验工具。
+> 本仓库是一个**技能包（Skill）仓库**，核心内容只有一项：`skills/qwen-image-2-1-creator/`。
+> 仓库**不包含**模型权重、生成图片或视频、GPU 实测结果，也不需要 GPU 即可完成安装与静态校验。
 
-> **当前状态：公开仓库候选版（静态校验通过，GPU / RunningHub 运行时验收待完成）。** 下载 JSON 并不代表模型已安装，也不保证每种 ComfyUI / RunningHub 节点版本均兼容。
+---
 
-## 1. 核心内容
+## 1. 项目简介
 
-| 模块 | 内容 | 使用入口 |
-| --- | --- | --- |
-| Depth 75 横评（推荐先试） | 3 个 Start × 5 个 End × 5 个 Weight，共 75 个结果 + 1 个无控制 Baseline | [`workflows/depth75/01_first_row_5_previews.json`](workflows/depth75/01_first_row_5_previews.json) |
-| Depth 75 全量版 | 75 条独立控制链，75 个 PreviewImage，全部启用 | [`workflows/depth75/02_all_75_previews.json`](workflows/depth75/02_all_75_previews.json) |
-| 手动深度图版 | 不调用 Depth Anything V2 节点，直接上传预处理好的深度图；仅先启用 5 格 | [`workflows/depth75/03_manual_depth_first_row_5.json`](workflows/depth75/03_manual_depth_first_row_5.json) |
-| Qwen Creator Skill v3 | 图像生成、单图/多图编辑、CN + 参考图、分镜、任务验证、视频交接 | [`skills/qwen-image-2-1-creator/`](skills/qwen-image-2-1-creator/) |
-| 静态校验 | JSON 参数、节点连接、75 格矩阵、两版差异核查 | [`scripts/check_depth75.py`](scripts/check_depth75.py) |
+**AI-KSK Qwen Image 2.1 Creator Skill** 面向 Codex 等兼容 Skill 机制的 Agent 环境，把 Qwen Image 2.1 的创作流程与 ComfyUI 工程流程固化为一份**可复用的执行协议**，并附带只用 Python 标准库即可运行的校验脚本、示例任务与参考资料。
 
-**模型边界：** Qwen Image 2.1 是图像生成/编辑模型；Skill 的视频路由只为外部 Wan / H3 模型准备任务交接，不宣称 Qwen 原生生成视频。Skill 的参考图能力取决于实际节点暴露的端口数量；不能把模型理论支持的张数等同于当前模板可直接接入的张数。
+**它解决什么问题**
 
-## 2. 开始前需要什么
+- 让 Agent 按固定规范产出 Qwen Image 2.1 的提示词与任务 JSON，而不是每次临时发挥。
+- 让 ComfyUI 工作流的提示词注入与改动审计有据可查（改了什么、没改什么）。
+- 让"结构控制（ControlNet Union）"与"内容参考（reference image）"的职责不被混为一谈。
+- 让需要交给外部视频模型的任务产出可执行的交接单，而不是把分镜 JSON 谎报成视频。
 
-- **ComfyUI**：建议 0.37.0 或更新且支持 Qwen Image 2.1。
-- **专用 Union 自定义节点**：[T8 Qwen Image 2.1 Fun ControlNet Union](https://github.com/T8mars/Comfyui-Qwen-Image-2.1-Fun-Controlnet-Union-T8)。必须包含 `QwenImage21UnionLoader`、`QwenImage21UnionApply`、`QwenImage21UnionLatentFromImage`。
-- **深度预处理器**（自动版）：[comfyui_controlnet_aux](https://github.com/Fannovel16/comfyui_controlnet_aux)，提供 `DepthAnythingV2Preprocessor`。
-- **模型权重**：Qwen Image 2.1 扩散模型、Qwen3-VL 文本编码器、Qwen 2.1 VAE、Qwen Image 2.1 Fun Union ControlNet 权重、Depth Anything V2 Base 权重（自动版）。**仓库不包含模型权重。**
-- Python 3.10+：仅用于本仓库的 Skill 验证与辅助脚本；生成图片仍需要 GPU / 有授权的云端平台。
+**适用场景**
 
-完整下载来源、文件名与安装目录：[`docs/INSTALL_CN.md`](docs/INSTALL_CN.md)。模型授权与非商业限制：[`docs/LICENSES_AND_ATTRIBUTION_CN.md`](docs/LICENSES_AND_ATTRIBUTION_CN.md)。
+| 场景 | 说明 |
+| --- | --- |
+| 提示词工程 | 按官方 PE-T2I / PE-I2I 规范起草、校对 T2I 与编辑指令 |
+| 图像创作与编辑 | 文生图、单图/多图编辑、局部重绘、透明图、扩图、文字海报、主体一致性、分镜 |
+| ComfyUI 工程 | 任务 JSON 校验、指定提示词节点注入、工作流 diff 审计 |
+| 结构化控制 | ControlNet Union + AIO 预处理路线的规则与提示词模板 |
+| 视频接力 | 为 Wan / H3 等**外部**视频模型准备图生视频、文生视频交接单 |
 
-## 3. 五分钟快速开始
+**这不是什么**
 
-1. 安装并启用 T8 Union 节点；自动深度版再安装 `comfyui_controlnet_aux`。
-2. 下载模型权重，放入对应 `ComfyUI/models/...` 目录。重启 ComfyUI。
-3. 拖入 `workflows/depth75/01_first_row_5_previews.json`。
-4. 在左侧 `LoadImage` 节点**手动选择自己的合法授权测试图片**，不得使用 JSON 中原有的本地图片文件名作为下载地址。
-5. 检查 `UNETLoader`、`CLIPLoader`、`VAELoader`、`QwenImage21UnionLoader` 文件名均能从下拉框选中；必要时改成你本地实际文件名。
-6. 修改 `TextEncodeQwenImage21` 正向提示词，使其描述输入图想要生成的内容；各格使用同一提示词与 Seed。
-7. 先运行 **Baseline + 首行 5 格**，确认无报错，再导入全量版做 75 格。
+- 不是模型，不是权重包，不是推理服务，不是 Web 界面。
+- 不是 GPU 性能测试项目；仓库内没有任何实测出图或耗时数据。
 
-> 自动 Depth 工作流中，`control_image` 接收的是深度预处理结果，而不是编辑参考图。**结构控制不等于画风/身份复制**。如需严格保留原人物和厚涂画风，应另外设计并验证 `QwenImage21UnionReferenceEncode` 参考图链，作为另一组实验，而不是混进纯 Depth 横评。
+---
 
-参数变量、Preview 排布、如何解读结果：[`docs/DEPTH_75_BENCHMARK_CN.md`](docs/DEPTH_75_BENCHMARK_CN.md)。
+## 2. 技能能力
 
-## 4. Creator Skill 安装与测试
+任务路由与产物（完整矩阵见 [`references/capabilities.md`](skills/qwen-image-2-1-creator/references/capabilities.md)）：
 
-在 `skills/qwen-image-2-1-creator/` 有完整的 `SKILL.md`、示例 JSON、参考资料和 Python 标准库脚本。复制该文件夹到你的 Codex `skills` 目录即可，**不要复制整个仓库作为单一 Skill**。原版 Skill 说明：[Skill README](skills/qwen-image-2-1-creator/README.md)。
+| 路由 | 输入 | 产物 | 说明 |
+| --- | --- | --- | --- |
+| `t2i` | 无参考图 | 提示词 + `wh_ratio` + 图 | 英文成片观察式描述 |
+| `single_edit` | 1 张图 | 编辑指令 + 图 | 动作式修改说明 |
+| `multi_edit` | 2–10 张图 | 指令 + 图 | 必须用 `<image1>`…`<imageN>` 明确角色 |
+| `local_edit` | 1 张图 + 遮罩 | 图 | 需真实存在 mask / inpaint 输入 |
+| `transparent` | 0 或 1–10 张图 | RGBA PNG | 必须保留 alpha，禁用 JPEG |
+| `outpaint` | 1 张图 | 图 | 明确扩展边与目标画幅 |
+| `typography` | 0 或 1+ 张图 | 图 | 逐字锁定文字并人工核验 |
+| `identity` | 1–10 张图 | 图 | 人物/服装/商品一致性与场景变体 |
+| `storyboard` | 0 或 1–10 张图 | 图 | 静态多格分镜，非视频 |
+| `benchmark` | 0–10 张图 | JSON | Skill 编排的参数/质量审计 |
+| CN 变体：`cn_t2i` / `cn_single_ref` / `cn_multi_ref` / `cn_inpaint_ref` | 参考图 + 控制图（+ mask） | 图 | 通过现有 mode 追加 `control_image` 字段表达；**没有独立的 `cn_*` 校验模式** |
+| `video_t2v` / `video_i2v` / `video_storyboard` | 0 或 1+ 张图 | **交接 JSON** | 由外部视频模型执行 |
 
-从仓库根目录执行：
+**明确的能力限制（请勿夸大）**
 
-```bash
-python scripts/check_depth75.py
-python -m unittest discover -s tests -v
-python -m unittest discover -s skills/qwen-image-2-1-creator/tests -v
-python skills/qwen-image-2-1-creator/scripts/validate_task.py --task skills/qwen-image-2-1-creator/examples/multi_edit.json
+- Qwen Image 2.1 是**图像**生成/编辑模型，**不原生生成视频**；`video_*` 路由只产出交接单。
+- 内置 Python 工具**只做**输入规范检查、指定节点提示词写入、工作流 diff 审计、视频交接单生成；**不会**下载模型、执行 PE-VLM 推理、部署节点、自动接通 2–10 个图像端口或生成图片。
+- 官方"支持 1–10 张参考图"是**模型能力**，不代表你手上的 ComfyUI 工作流真的暴露了 1–10 个图像输入端口；必须以实际节点为准。
+- ControlNet Union 路线需要真实安装 T8 Union 节点；环境不具备时 Skill 应直接说明无法运行，而不是绕过。
+- 未在真实 GPU 环境验证过的内容，一律标注为 `runtime_pending`，不会写成"已实测"。
+
+---
+
+## 3. 安装方法
+
+**安装源就是本仓库的 `skills/qwen-image-2-1-creator/` 目录，没有另行发布的 ZIP 包。**
+安装 = 把该子目录复制到 Codex 的 skills 目录下，**不要**把整个仓库当作一个 Skill 复制进去。
+
+### Windows PowerShell
+
+```powershell
+git clone https://github.com/AI-KSK/AI-KSK-Qwen-Image-2.1-Creator-Toolkit.git
+Set-Location AI-KSK-Qwen-Image-2.1-Creator-Toolkit
+
+$src  = Join-Path (Get-Location) 'skills\qwen-image-2-1-creator'
+$dest = if ($env:CODEX_HOME) { Join-Path $env:CODEX_HOME 'skills' } else { Join-Path $env:USERPROFILE '.codex\skills' }
+
+New-Item -ItemType Directory -Force -Path $dest | Out-Null
+Copy-Item -Recurse -Force $src (Join-Path $dest 'qwen-image-2-1-creator')
+
+# 确认安装结果：应能看到 SKILL.md
+Get-ChildItem (Join-Path $dest 'qwen-image-2-1-creator') | Select-Object Name
 ```
 
-本地测试仅证明数据结构和脚本规则，不证明生成画质、VRAM、执行耗时或 RunningHub 运行通过。
+### Linux / macOS
 
-## 5. 项目结构
+```bash
+git clone https://github.com/AI-KSK/AI-KSK-Qwen-Image-2.1-Creator-Toolkit.git
+cd AI-KSK-Qwen-Image-2.1-Creator-Toolkit
+
+src="$PWD/skills/qwen-image-2-1-creator"
+dest="${CODEX_HOME:-$HOME/.codex}/skills"
+
+mkdir -p "$dest"
+cp -R "$src" "$dest/qwen-image-2-1-creator"
+
+# 确认安装结果：应能看到 SKILL.md
+ls "$dest/qwen-image-2-1-creator"
+```
+
+**安装要点**
+
+- 目标目录名必须保持 `qwen-image-2-1-creator`，与 `SKILL.md` frontmatter 中的 `name` 一致。
+- 旧版技能目录（如 `qwen-image-2-1-t2i-creator`）不会被自动删除；如需替换请自行停用或移出。
+- 安装 Skill 只需要 **Python 3.10+**，不需要 GPU、不需要模型权重、不需要联网。
+- 可选的 ComfyUI / Union 节点 / 模型安装见 [`docs/INSTALL_CN.md`](docs/INSTALL_CN.md)。
+
+---
+
+## 4. 如何调用
+
+### 在 Codex 中调用
+
+```
+$qwen-image-2-1-creator 按 A 提示词 / B 工作流工程 / C 质量验收三角色交叉讨论，制作 Qwen Image 2.1 双图换装工作流：图1人物、图2服装；严格保持人物 ID，完成后检查每一个输入端口和 PreviewImage。
+```
+
+```
+$qwen-image-2-1-creator 根据这张角色三视图建立连续四镜头分镜，并输出给 Wan2.2 的图生视频任务交接单；不要宣称 Qwen 本身能生成视频。
+```
+
+```
+$qwen-image-2-1-creator 用 ControlNet Union 做结构控制：这张照片是参考主体，这张线稿是 control image。只改姿态，不改身份和服装，并按 cn_single_ref 规则写提示词。
+```
+
+### 本地静态验证（不需要 GPU）
+
+命令需要**在技能目录内**执行（示例路径相对于该目录）：
+
+```bash
+cd skills/qwen-image-2-1-creator
+
+python scripts/validate_task.py --task examples/multi_edit.json
+python scripts/validate_task.py --task examples/t2i_poster.json
+python scripts/validate_task.py --task examples/video_storyboard.json
+python scripts/video_handoff.py  --task examples/video_storyboard.json --output video_handoff.json
+python -m unittest discover -s tests -v
+```
+
+工作流注入与审计：
+
+```bash
+python scripts/inject_comfyui.py --workflow assets/reference_11groups.json \
+    --task examples/t2i_poster.json --node-title 'T2I-01｜正向提示词' --output updated.json
+python scripts/audit_comfyui.py --original assets/reference_11groups.json \
+    --updated updated.json --allowed-titles 'T2I-01｜正向提示词'
+```
+
+注入脚本只会改写明确指定的提示词节点文本，**绝不覆盖原工作流**；节点不存在或标题重复时直接失败，不会猜测节点。
+
+---
+
+## 5. 文件结构
 
 ```text
 AI-KSK-Qwen-Image-2.1-Creator-Toolkit/
-├── README.md / README_EN.md
-├── workflows/depth75/          # 三套 ComfyUI UI JSON，不是 API JSON
-├── skills/qwen-image-2-1-creator/  # 原始 v3 Creator Skill（去除 pycache）
-├── scripts/check_depth75.py   # 75格结构校验
-├── tests/                     # 静态自动化测试
-├── data/depth75_matrix.csv    # 75格的精确参数表
-├── docs/                      # 安装、复现、排障、授权、发布清单
-├── examples/                  # 参考提示词/参数说明（无第三方原图）
-├── .github/                   # CI、Issue、PR 模板
-├── .gitignore / .gitattributes
-├── LICENSE                    # Apache-2.0，仅覆盖 AI-KSK 原创部分
-├── NOTICE                     # 版权归属与第三方许可边界
-└── LICENSE-DECISION.md        # 许可证决策记录
+├── README.md / README_EN.md        # 中英文入口
+├── LICENSE / NOTICE                # 许可与版权边界
+├── LICENSE-DECISION.md             # 许可证决策记录
+├── CHANGELOG.md / CONTRIBUTING.md / SECURITY.md
+├── docs/                           # 环境依赖、排障、FAQ、上游来源、授权说明
+├── examples/REPRO_LOG_TEMPLATE.csv # 复现记录表模板
+├── skills/qwen-image-2-1-creator/  # ★ Skill 本体
+└── .github/                        # CI 与 Issue / PR 模板
 ```
 
-## 6. 研究和交付边界
+### Skill 目录职责
 
-- **已静态检查**：76 个 KSampler 的参数布局、75 个 Union Apply、75 个 Preview、唯一三维参数组合、链路引用及类型、5 格版本和全量版本的参数一致性。
-- **未运行实测**：任何 ComfyUI / RunningHub 的 GPU 出图、控制效果、耗时、显存峰值、不同环境安装兼容性。
-- **许可证**：本仓库 AI-KSK 原创部分（Skill 文档与资产、原创辅助脚本、参数表、自定义工作流 JSON）采用 **Apache-2.0**，条款见 [`LICENSE`](LICENSE)，版权与范围见 [`NOTICE`](NOTICE)。该许可**不覆盖**第三方节点与模型权重：本仓库不附带 Qwen / T8 / Depth Anything 权重，T8 Union ControlNet 权重受到非商业研究授权约束，不能因本仓库公开就用于商业生产。决策记录见 [`LICENSE-DECISION.md`](LICENSE-DECISION.md)。
-- **素材版权**：不捆绑用户提供的参考肖像、二次元插画或来源不明的第三方作品。示例请自行上传具有使用权的图片。
-- **涉及真实账号的临时媒体链接、签名参数和密钥**：不纳入仓库。
+| 路径 | 职责 |
+| --- | --- |
+| `SKILL.md` | 技能主协议：执行顺序、任务路由、PE 提示词规范、ControlNet Union 规则、工作流调度、验收红线。**使用者与 Agent 的首要阅读对象。** |
+| `README.md` | 技能的简短说明与调用示例。 |
+| `references/` | 参考资料：能力矩阵、官方来源、三角色评审、PE 推理边界、CN 与参考图规则、视频接力、质量评分标准。 |
+| `examples/` | 可直接用 `scripts/validate_task.py` 校验的示例任务 JSON，覆盖 T2I、编辑、局部编辑、透明图、扩图、文字、一致性、分镜、视频交接与 CN 路线。 |
+| `scripts/` | Python 标准库脚本：任务校验、ComfyUI 提示词注入、工作流 diff 审计、视频交接单生成。 |
+| `tests/` | 技能单元测试，校验路由规则与示例一致性。 |
+| `assets/` | 任务 JSON schema 示例、历史提示词参考、11 组 A/B ComfyUI 模板起点。 |
 
-## 7. 参与和反馈
+---
 
-节点/流程问题请按照 [Issue 模板](.github/ISSUE_TEMPLATE/bug_report.md) 提交：**ComfyUI 版本、T8 插件版本、模型文件名、工作流版本、报错原文、节点 ID、复现步骤、是否为 RunningHub 环境**。请移除日志中的 Token / Cookie / 签名链接 / 个人身份信息。
+## 6. 环境与模型依赖
 
-贡献说明：[CONTRIBUTING.md](CONTRIBUTING.md) · 安全反馈：[SECURITY.md](SECURITY.md) · 更新日志：[CHANGELOG.md](CHANGELOG.md)。
+| 任务类型 | 需要的环境 | 是否需要 GPU |
+| --- | --- | --- |
+| 安装 Skill、阅读文档 | 无（仅文件复制） | 否 |
+| 任务 JSON 校验、示例检查、单元测试 | Python 3.10+ 标准库 | 否 |
+| 视频交接单生成 | Python 3.10+ 标准库 | 否 |
+| ComfyUI 工作流注入与 diff 审计 | Python 3.10+ 标准库 + 你的工作流 JSON | 否 |
+| 真实文生图 / 图像编辑 / ControlNet Union | ComfyUI（含 Qwen Image 2.1 支持）+ 模型权重，或 RunningHub 等平台 | **是** |
+| PE-T2I / PE-I2I 提示词模型推理 | 单独部署的官方 PE 权重或服务 | 取决于部署 |
+| 图生视频 / 文生视频 | **外部**视频模型（如 Wan / H3），需独立部署 | **是** |
 
-## 8. 外部技术来源
+**模型与节点的具体下载地址、文件名与放置目录**见 [`docs/INSTALL_CN.md`](docs/INSTALL_CN.md)；上游来源对照见 [`docs/TECHNICAL_SOURCES.md`](docs/TECHNICAL_SOURCES.md)。
 
-Qwen-Image-2.1：<https://huggingface.co/Qwen/Qwen-Image-2.1>  
-T8 Union 插件及原生工作流：<https://github.com/T8mars/Comfyui-Qwen-Image-2.1-Fun-Controlnet-Union-T8>  
-Union 权重：<https://huggingface.co/t8star/Qwen-Image-2.1-Fun-Controlnet-Union-Comfy>  
-Depth Anything V2 预处理器：<https://github.com/Fannovel16/comfyui_controlnet_aux>  
+---
 
-详见 [`docs/TECHNICAL_SOURCES.md`](docs/TECHNICAL_SOURCES.md)。本项目是独立的工作流与 Skill 打包项目，**不代表上述官方或第三方团队的背书**。
+## 7. 版权与许可证
+
+**本仓库原创内容**采用 **Apache-2.0**（维护者已于 2026-10-11 确认授权）。条款见 [`LICENSE`](LICENSE)；**覆盖范围与非覆盖清单以 [`NOTICE`](NOTICE) 为准**；决策与确认过程见 [`LICENSE-DECISION.md`](LICENSE-DECISION.md)。
+
+**该许可不覆盖以下第三方内容**，它们各自适用上游条款：
+
+- **模型权重**：Qwen Image 2.1 系列权重不随本仓库分发。
+- **T8 Qwen Image 2.1 Fun ControlNet Union**：自定义节点代码与转换权重各有独立许可；转换权重受研究/非商业使用限制，**公开本仓库不会解除该限制**。
+- **comfyui_controlnet_aux / Depth Anything V2** 等第三方节点与预处理器。
+- **ComfyUI 官方工作流模板材料（MIT，Copyright (c) 2023-present Comfy Org）**：`skills/qwen-image-2-1-creator/assets/reference_11groups.json` 派生自 ComfyUI 官方模板，保留了其模型下载与注册表元数据；上游 MIT 署名与许可全文已按 MIT 要求完整收录于 [`NOTICE`](NOTICE)，该材料**不在**本仓库的 Apache-2.0 授权范围内。
+- **第三方素材**：本仓库不包含任何人物肖像、插画、截图或他人版权图片。
+
+**本仓库不包含**：模型权重、API 密钥、Cookie、签名链接、RunningHub 账户配置、私人测试图或 GPU 输出。
+
+商业使用前请自行核对各上游许可证原文；本节与 `NOTICE` 均不构成法律意见。详细分层说明见 [`docs/LICENSES_AND_ATTRIBUTION_CN.md`](docs/LICENSES_AND_ATTRIBUTION_CN.md)。
+
+---
+
+## 8. 作者与项目地址
+
+- **维护者**：AI-KSK
+- **项目主页**：<https://github.com/AI-KSK/AI-KSK-Qwen-Image-2.1-Creator-Toolkit>
+- **Skill 目录**：[`skills/qwen-image-2-1-creator/`](skills/qwen-image-2-1-creator/)
+- **问题反馈**：请按 [Issue 模板](.github/ISSUE_TEMPLATE/bug_report.md) 提交；提交日志前请移除 token、cookie、签名链接与个人身份信息，参见 [`SECURITY.md`](SECURITY.md)。
+
+欢迎 Fork 并在原有结构上继续开发；贡献前请阅读 [`CONTRIBUTING.md`](CONTRIBUTING.md)。

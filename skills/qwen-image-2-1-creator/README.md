@@ -1,20 +1,39 @@
 # AI-KSK Qwen Image 2.1 Creator Skill — v3.0.0
 
-**一个 Skill，覆盖文生图、1~10张多参考图编辑、ControlNet Union 结构控制、AIO 预处理、局部编辑/遮罩、RGBA透明图、扩图、文字海报、人物/产品一致性、分镜、横评，以及 Wan/H3 等视频模型接力。**
+**一个 Skill，覆盖文生图、1~10 张多参考图编辑、ControlNet Union 结构控制、AIO 预处理、局部编辑/遮罩、RGBA 透明图、扩图、文字海报、人物/产品一致性、分镜、横评，以及 Wan/H3 等视频模型接力。**
 
-## 安装（Windows PowerShell）
+> 本目录就是技能本体。**安装源就是这个目录，没有另外发布的 ZIP 包。**
 
-把 `Qwen21_Full_Creator_Skill.zip` 放到 Downloads：
+## 安装
+
+安装 = 把本目录复制到 Codex 的 skills 目录下，目标目录名保持 `qwen-image-2-1-creator`（与 `SKILL.md` frontmatter 的 `name` 一致）。
+只复制本目录，**不要**把整个仓库当作一个 Skill。
+
+### Windows PowerShell
 
 ```powershell
-$zip = Join-Path $env:USERPROFILE 'Downloads\Qwen21_Full_Creator_Skill.zip'
+git clone https://github.com/AI-KSK/AI-KSK-Qwen-Image-2.1-Creator-Toolkit.git
+Set-Location AI-KSK-Qwen-Image-2.1-Creator-Toolkit
+
+$src  = Join-Path (Get-Location) 'skills\qwen-image-2-1-creator'
 $dest = if ($env:CODEX_HOME) { Join-Path $env:CODEX_HOME 'skills' } else { Join-Path $env:USERPROFILE '.codex\skills' }
+
 New-Item -ItemType Directory -Force -Path $dest | Out-Null
-Expand-Archive -LiteralPath $zip -DestinationPath $dest -Force
+Copy-Item -Recurse -Force $src (Join-Path $dest 'qwen-image-2-1-creator')
 ```
 
-如希望替换旧 Skill，可自行停用/移出旧 `qwen-image-2-1-t2i-creator` 目录。新技能名是 `qwen-image-2-1-creator`，不会自动删除旧目录。
+### Linux / macOS
 
+```bash
+git clone https://github.com/AI-KSK/AI-KSK-Qwen-Image-2.1-Creator-Toolkit.git
+cd AI-KSK-Qwen-Image-2.1-Creator-Toolkit
+
+dest="${CODEX_HOME:-$HOME/.codex}/skills"
+mkdir -p "$dest"
+cp -R skills/qwen-image-2-1-creator "$dest/qwen-image-2-1-creator"
+```
+
+安装只需要 Python 3.10+，不需要 GPU、模型权重或联网。旧技能目录（如 `qwen-image-2-1-t2i-creator`）不会被自动删除，如需替换请自行停用或移出。
 
 ## v3.0 新增：ControlNet + 参考图编辑
 
@@ -42,6 +61,8 @@ Expand-Archive -LiteralPath $zip -DestinationPath $dest -Force
 
 ## 只运行本地静态检查
 
+在**本目录内**执行（示例路径相对于本目录）：
+
 ```powershell
 python scripts/validate_task.py --task examples/multi_edit.json
 python scripts/validate_task.py --task examples/t2i_poster.json
@@ -55,7 +76,7 @@ python -m unittest discover -s tests -v
 
 - `Qwen/Qwen-Image-2.1`: Base 生成+编辑。
 - `Qwen/Qwen-Image-2.1-Turbo`: 官方 8 步完整 checkpoint，加载自带采样计划。
-- `qwen_image_2.1_turbo_lora_avg_rank_178_bf16.safetensors`: 用户既有 LoRA 加速路线，在当前 workflow 适配下另测。
+- `qwen_image_2.1_turbo_lora_avg_rank_178_bf16.safetensors`: 第三方 Turbo LoRA 加速路线，必须单独测试与标记，不能当作官方 Turbo checkpoint。
 - `Qwen/Qwen-Image-2.1-PE-T2I`: 官方提示词增强模型，仅用于 T2I prompt 改写。
 - `Qwen/Qwen-Image-2.1-PE-I2I`: 官方编辑指令增强模型，仅用于图像编辑 prompt 改写。
 
@@ -63,4 +84,12 @@ python -m unittest discover -s tests -v
 
 ## 注意
 
-本技能的内置 Python 工具负责输入规范检查、指定节点提示词写入、工作流差异审计与视频外部模型交接清单；**不会自动下载模型、执行 PE-VLM 推理、部署节点、自动连接任意10图输入、生成图片或视频。** 这些步骤应由接入该 Skill 的 Agent 在有对应工具和授权的真实环境中执行，并提供可验证日志。此前的 11 组 A/B ComfyUI 模板在 `assets/reference_11groups.json`，仅作为示例起点。
+本技能的内置 Python 工具负责输入规范检查、指定节点提示词写入、工作流差异审计与视频外部模型交接清单；**不会自动下载模型、执行 PE-VLM 推理、部署节点、自动连接任意10图输入、生成图片或视频。** 这些步骤应由接入该 Skill 的 Agent 在有对应工具和授权的真实环境中执行，并提供可验证日志。模板起点在 `assets/reference_11groups.json`，仅作为示例。
+
+## 许可与署名
+
+- 本 Skill 的原创内容采用 **Apache-2.0**。完整覆盖范围与第三方非覆盖清单见仓库根目录 `LICENSE` 与 `NOTICE`。
+- `assets/reference_11groups.json` **派生自 ComfyUI 官方工作流模板**（MIT，Copyright (c) 2023-present Comfy Org），并保留其模型下载与注册表元数据。上游署名与 MIT 许可全文已收录于仓库根目录 `NOTICE`；该材料不在本仓库的 Apache-2.0 授权范围内。
+- 模型权重与节点安装、上游来源与授权边界说明见仓库根目录的 `docs/INSTALL_CN.md`、`docs/TECHNICAL_SOURCES.md` 与 `docs/LICENSES_AND_ATTRIBUTION_CN.md`。
+
+仓库地址：<https://github.com/AI-KSK/AI-KSK-Qwen-Image-2.1-Creator-Toolkit>

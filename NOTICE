@@ -1,33 +1,89 @@
-AI-KSK Qwen Image 2.1 Creator Toolkit
+AI-KSK Qwen Image 2.1 Creator Skill
 Copyright 2026 AI-KSK
 
-This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+Apache License 2.0
+------------------
+The original materials authored for AI-KSK in this repository are licensed
+under the Apache License, Version 2.0 (see LICENSE). The grant covers exactly
+the following:
 
-Scope of this license
----------------------
-The Apache-2.0 license above applies only to the original materials authored
-for AI-KSK in this repository: the Creator Skill documents and assets, the
-authored ComfyUI workflow JSON files, the parameter manifest, the Python
-helper/verifier scripts, the tests and the documentation.
+  - the Creator Skill directory `skills/qwen-image-2-1-creator/`: SKILL.md,
+    README.md, the reference documents under references/, the example task
+    JSON files under examples/, the Python standard-library scripts under
+    scripts/, and the unit tests under tests/;
+  - the repository-level documentation: README.md, README_EN.md, CHANGELOG.md,
+    CONTRIBUTING.md, SECURITY.md, LICENSE-DECISION.md, the files under docs/,
+    and examples/REPRO_LOG_TEMPLATE.csv;
+  - the CI workflow and the GitHub issue / pull-request templates under
+    .github/, and the repository configuration files .gitignore,
+    .gitattributes and .env.example.
 
 It does NOT apply to, and grants no rights in:
+
   - Qwen Image 2.1 model weights or any other model checkpoint;
-  - the T8 Qwen Image 2.1 Fun ControlNet Union custom node implementation;
-  - comfyui_controlnet_aux or any other third-party node package;
+  - the T8 Qwen Image 2.1 Fun ControlNet Union custom node implementation or
+    its upstream sample workflow;
+  - comfyui_controlnet_aux, Depth Anything V2, or any other third-party node
+    package or model;
+  - ComfyUI workflow-template material derived into
+    `skills/qwen-image-2-1-creator/assets/reference_11groups.json`
+    (see "Third-party notices" below);
+  - third-party ComfyUI extension identifiers, node-type names and registry
+    metadata retained inside the workflow JSON, which are present only for
+    compatibility with the user's own environment;
   - any third-party artwork, sample image or media.
 
-Third-party components
-----------------------
-Qwen Image 2.1 Fun ControlNet Union weights are distributed upstream under the
-Qwen Research License (non-commercial research and evaluation use only) and are
-NOT bundled here. Third-party node packages keep their own licenses. Installing
-or running them is governed by those terms, not by this repository's license.
+Third-party notices
+-------------------
+1. ComfyUI workflow template material (MIT).
+   `skills/qwen-image-2-1-creator/assets/reference_11groups.json` is derived
+   from a ComfyUI / Comfy-Org workflow template and retains that template's
+   `properties.models` download metadata and `cnr_id` registry metadata.
+   Upstream project: https://github.com/Comfy-Org/workflow_templates
+   Upstream license (MIT), reproduced in full as required:
+
+     MIT License
+
+     Copyright (c) 2023-present Comfy Org
+
+     Permission is hereby granted, free of charge, to any person obtaining a
+     copy of this software and associated documentation files (the
+     "Software"), to deal in the Software without restriction, including
+     without limitation the rights to use, copy, modify, merge, publish,
+     distribute, sublicense, and/or sell copies of the Software, and to permit
+     persons to whom the Software is furnished to do so, subject to the
+     following conditions:
+
+     The above copyright notice and this permission notice shall be included
+     in all copies or substantial portions of the Software.
+
+     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+     THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+     OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+     ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+     OTHER DEALINGS IN THE SOFTWARE.
+
+   That upstream material remains under the MIT terms above. It is not
+   relicensed by this repository's Apache-2.0 grant, and AI-KSK claims
+   authorship only of its modifications and additions to that template.
+
+2. Qwen Image 2.1 Fun ControlNet Union weights are distributed upstream under
+   the Qwen Research License (non-commercial research and evaluation use only)
+   and are NOT bundled here.
+
+3. Third-party node packages (including the T8 Qwen Image 2.1 Fun ControlNet
+   Union nodes and comfyui_controlnet_aux) keep their own upstream licenses.
+   Only node-type names are referenced in this repository's workflow JSON;
+   no upstream source code is copied or redistributed. Installing or running
+   them is governed by those upstream terms, not by this repository's license.
 
 No model weights, credentials, signed media URLs, private sample images or GPU
 run logs are included in this repository.
 
 Trademarks
 ----------
-Qwen, ComfyUI, RunningHub and other names are trademarks of their respective
-owners. This project is an independent toolkit and implies no endorsement or
-affiliation.
+Qwen, ComfyUI, Comfy Org, RunningHub and other names are trademarks of their
+respective owners. This project is an independent toolkit and implies no
+endorsement or affiliation.
