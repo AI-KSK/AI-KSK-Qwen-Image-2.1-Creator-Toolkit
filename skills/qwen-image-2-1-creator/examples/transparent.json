@@ -1,0 +1,11 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [],
+  "wh_ratio": "1:1",
+  "ratio_follow": "",
+  "id": "RGBA-01",
+  "mode": "transparent",
+  "positive_prompt": "A single clean transparent-background product cutout of a transparent glass water bottle, with coherent refraction and visible liquid boundary, subtle true reflections, perfectly clean product silhouette, no ground plane, no cast background color, native RGBA alpha with tidy anti-aliased edges.",
+  "input_images": []
+}

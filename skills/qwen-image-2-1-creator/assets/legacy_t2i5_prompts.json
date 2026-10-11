@@ -1,0 +1,96 @@
+{
+  "task": "qwen-image-2.1-t2i",
+  "style": "Qwen official PE-T2I observational conventions, manually authored (not checkpoint-generated)",
+  "source_workflow": "AI-KSK_Qwen21_11Groups_T2I5_OfficialStyle.json",
+  "cases": [
+    {
+      "id": "T2I-01",
+      "name": "真人时尚肖像 / 肤质、毛发、手指",
+      "task": "t2i",
+      "category": "portrait",
+      "positive_prompt": "A vertical editorial fashion photograph of a young adult woman seated beside a tall atelier window, with a warm ivory interior and muted charcoal accents. She has an oval face, natural skin texture, dark brown eyes, and long black hair with a few silver strands tucked behind one ear. Her expression is calm and focused, and her gaze is directed slightly toward the window. She wears an indigo tweed jacket over an off-white silk blouse, a charcoal pleated skirt, and a narrow silver ring on her right hand. Her right hand holds the handle of a small transparent glass cup, while her left hand rests naturally on an open hardcover book on a wooden table. The hands, cup handle, and pages are clearly visible without overlapping awkwardly. In the background, a bronze floor lamp and the soft outline of a bookshelf remain out of focus. The lighting is soft daylight entering from the upper left, revealing delicate skin pores, individual hair strands, fine fabric weave, natural folds, and subtle glass reflections. The wooden tabletop enters from the lower right corner, and the open book lies just below the left hand with its spine visible. A narrow strip of the floor is visible beyond the table leg; the woman's shoulders and elbows follow a relaxed, anatomically plausible posture. On the upper left, the window frame forms a clean straight edge against the pale wall, and the floor lamp is separated from her silhouette. The glass cup appears genuinely transparent, with the book and fingers distorted only where seen through curved glass. Fine flyaway strands around the ear catch the same soft light as the jacket collar; the fabric pattern continues across the folds without abrupt changes. The composition balances a precise human likeness with tactile, believable materials and a quiet photographic mood.",
+      "wh_ratio": "3:4",
+      "resolution": [
+        1200,
+        1600
+      ],
+      "seed": 9527,
+      "exact_text": [],
+      "evaluation_focus": "面部/五官、发丝、右手握杯、左手按书、织物与反光一致性",
+      "source": "authored from approved benchmark, refined against Qwen official PE-T2I conventions"
+    },
+    {
+      "id": "T2I-02",
+      "name": "透明杯商品 / 折射、水体、材质",
+      "task": "t2i",
+      "category": "glass_product",
+      "positive_prompt": "A vertical photorealistic studio product photograph of a single transparent cylindrical drinking glass filled halfway with clear water and exactly three large ice cubes, standing on a pale travertine countertop. The glass has a thick rounded base, a thin polished rim, and no printed logo or decoration. One ice cube breaks the water surface while two remain partly submerged, each showing believable internal bubbles and sharply defined refracted edges. Small condensation droplets cling to the outer wall, and a narrow ribbon of water slides down the right side of the glass. To the left lies a folded sand-colored linen napkin; to the right sits a small stainless-steel spoon with a restrained reflection of the window. Behind the product, an out-of-focus rectangular window and a muted blue-grey wall form a simple, spacious background. The lighting comes from a large softbox above and to the left, creating controlled highlights, accurate caustic patterns on the stone, transparent edges, and physically consistent shadows. The left edge of the glass remains distinct against the darker portion of the wall, while the right edge overlaps the bright background and is defined by a slim highlight. At the lower center, the thick glass base slightly magnifies the countertop vein beneath it. The waterline is level, and the submerged parts of the ice cubes are displaced by refraction rather than duplicated. A faint elliptical shadow falls toward the lower right, matching the upper-left studio source. The napkin folds lie flat without touching the glass, and the spoon sits beyond the product rather than merging into its silhouette. The whole photograph emphasizes realistic water optics, clean material boundaries, and disciplined commercial product styling.",
+      "wh_ratio": "3:4",
+      "resolution": [
+        1200,
+        1600
+      ],
+      "seed": 9527,
+      "exact_text": [],
+      "evaluation_focus": "仅1只玻璃杯、正好3块冰、浸没关系、冷凝水与投影物理逻辑",
+      "source": "authored from approved benchmark, refined against Qwen official PE-T2I conventions"
+    },
+    {
+      "id": "T2I-03",
+      "name": "中英混排海报 / 文字、排版",
+      "task": "t2i",
+      "category": "typography",
+      "positive_prompt": "A vertical editorial technology exhibition poster printed on smooth warm-white paper, built around a precise modernist grid with deep navy typography, a vermilion accent, and generous empty space. Across the very top, a small uppercase heading reads \"AI-KSK LAB\". Directly below, a very large bold headline reads \"QWEN IMAGE 2.1\", with the number and decimal point preserved exactly. Beneath the headline, a prominent Chinese subtitle reads \"图像的下一步\" in clear black Chinese characters. At the center of the poster, one simple translucent glass sphere casts a soft shadow across a pale rectangular panel, with a narrow vermilion circle partially visible behind it. The lower half contains exactly three neatly aligned horizontal rows. The left side of each row shows a bold number and Chinese label: \"01 人像\", \"02 材质\", and \"03 排版\", in that order from top to bottom. Fine divider lines separate the rows. The footer has the English text \"TEXT TO IMAGE\" on the left and \"OCT 10\" on the right. All visible lettering is clean, legible, correctly spelled, and aligned to the grid. At the upper-left margin, the small exhibition label is set apart from the large title by a measured strip of blank paper. The sphere occupies the center without touching the headline, and its glass rim preserves a gentle reflection of the pale panel behind it. On the right side of the grid, the three numbered rows end at the same vertical alignment; the dividing rules have consistent weight. The bright accent appears only behind the sphere and as a single short footer rule, leaving the dark lettering dominant. Each of the eight requested text strings is visible as actual printed type, not as abstract shapes or tiny unreadable marks. Soft even studio light reveals the slight grain of the paper, while the overall design remains minimal, balanced, and easy to read.",
+      "wh_ratio": "3:4",
+      "resolution": [
+        1200,
+        1600
+      ],
+      "seed": 9527,
+      "exact_text": [
+        "AI-KSK LAB",
+        "QWEN IMAGE 2.1",
+        "图像的下一步",
+        "01 人像",
+        "02 材质",
+        "03 排版",
+        "TEXT TO IMAGE",
+        "OCT 10"
+      ],
+      "evaluation_focus": "逐字核对所有中英文、顺序、行列与数字",
+      "source": "authored from approved benchmark, refined against Qwen official PE-T2I conventions"
+    },
+    {
+      "id": "T2I-04",
+      "name": "建筑室内 / 透视、直线、自然光",
+      "task": "t2i",
+      "category": "architecture",
+      "positive_prompt": "A vertical architectural interior photograph of a quiet contemporary reading lounge with clean two-point perspective and convincing spatial depth. Pale limewashed walls meet a warm oak ceiling, and a floor-to-ceiling window occupies the far right wall, looking out toward a small bamboo courtyard. A long low sofa upholstered in muted olive linen sits against the back wall. In front of it stands one round white marble coffee table with a slim dark metal base; a single cobalt-blue ceramic vase rests at its center. On the left, an open walnut bookshelf contains carefully spaced books and two unglazed clay vessels, while a slender paper floor lamp stands between the shelf and the sofa. The polished concrete floor reflects only a restrained amount of daylight, and the tabletop shows subtle stone veining with correct elliptical perspective. The lighting is late-morning sun entering from the right, casting long soft-edged shadows that agree with the window position. All vertical architectural lines remain straight, furniture legs touch the floor naturally, and the layered foreground, midground, and courtyard have coherent scale and geometry. Along the left edge, the bookshelf uprights are vertical and parallel, and the horizontal shelves narrow consistently toward the vanishing points. The right-hand window frame follows the same geometry as the wall, with no bent mullions or impossible reflections. At the bottom of the image, the polished floor meets the seating legs with visible, correctly directed contact shadows. The vase has a stable round opening, the coffee table is truly circular in perspective, and its metal base does not intersect the sofa. The bamboo beyond the glass appears farther away than the indoor furniture, softened slightly by atmospheric depth rather than extreme blur. The overall atmosphere is calm, lived-in, and convincingly photographic.",
+      "wh_ratio": "3:4",
+      "resolution": [
+        1200,
+        1600
+      ],
+      "seed": 9527,
+      "exact_text": [],
+      "evaluation_focus": "双点透视、垂线、家具着地、阴影与窗口一致性",
+      "source": "authored from approved benchmark, refined against Qwen official PE-T2I conventions"
+    },
+    {
+      "id": "T2I-05",
+      "name": "二人动漫决斗 / 手部、刀剑交互",
+      "task": "t2i",
+      "category": "anime_duel",
+      "positive_prompt": "A vertical cinematic anime illustration of exactly two young adult swordswomen dueling on a weathered stone bridge above a misty mountain river at twilight. The fighter on the left has short black hair, a dark indigo jacket, cream trousers, and a silver sword held in both hands. The fighter on the right has long auburn hair tied in a high ponytail, a muted crimson coat, dark boots, and a slender steel blade. Their swords meet at a single clearly defined point near the center of the scene, while their feet are planted at different distances on the bridge and their bodies lean against the force of the clash. Each character has a distinct silhouette, consistent facial features, readable hand positions, and anatomically coherent arms and legs. Behind them, the bridge curves toward an old tiled-roof pavilion on the upper right; dark pine trees rise on the left, and distant mountains recede into blue-grey mist. Warm sunset light reaches the fighters from behind, contrasting with cool shadows beneath the bridge. The left swordswoman anchors the lower-left part of the frame while the second occupies the right foreground, leaving a readable gap between their torsos. Their forearms connect naturally to their two hands and the hilts they hold. At the central crossing, exactly two steel blades meet once and continue cleanly away from the contact point, without duplicate edges or extra weapon tips. A pale ribbon of river appears through the bridge arch beneath them; the tiled pavilion is visibly behind the combatants. The nearby stone joints have consistent perspective, and their shadows share one dusk light source. The battle is readable from silhouette and body mechanics alone, without sparks or floating visual debris. The artwork uses controlled cel shading, confident clean linework, broad color masses, crisp sword geometry, and expressive but restrained motion, creating a dramatic scene without cluttered effects.",
+      "wh_ratio": "3:4",
+      "resolution": [
+        1200,
+        1600
+      ],
+      "seed": 9527,
+      "exact_text": [],
+      "evaluation_focus": "仅2人、左右身份、武器交点、手部、动作连贯和远景层次",
+      "source": "authored from approved benchmark, refined against Qwen official PE-T2I conventions"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+# Keep the workflow JSON readable; do not store large model weights in this repository.
+*.md text eol=lf
+*.py text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.csv text eol=lf

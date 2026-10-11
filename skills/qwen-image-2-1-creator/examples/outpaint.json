@@ -1,0 +1,13 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [],
+  "wh_ratio": "16:9",
+  "ratio_follow": "",
+  "id": "OUTPAINT-01",
+  "mode": "outpaint",
+  "positive_prompt": "向画面左右两侧扩展现有风景，延续原图的山脉地平线、透视、天空云层和夕阳光线；保留现有中心人物和主体完全一致，新增边缘环境具有自然连续的几何关系与材质纹理。",
+  "input_images": [
+    "images/scenery.png"
+  ]
+}

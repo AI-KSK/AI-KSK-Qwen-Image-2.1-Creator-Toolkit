@@ -1,0 +1,14 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [
+    "透明之美",
+    "Qwen Image 2.1"
+  ],
+  "wh_ratio": "3:4",
+  "ratio_follow": "",
+  "id": "TYPE-01",
+  "mode": "typography",
+  "positive_prompt": "A minimal white editorial advertising poster showing a crystal glass on a matte pale-blue tabletop. A bold navy headline at the top reads \"透明之美\". A small line below it reads \"Qwen Image 2.1\". The typographic hierarchy is exact, aligned and clean, with broad empty margins, coherent water reflections and no decorative particles.",
+  "input_images": []
+}

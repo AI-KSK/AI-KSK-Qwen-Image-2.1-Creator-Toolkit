@@ -1,0 +1,1 @@
+timestamp,comfyui_version,plugin_version,model_file,controlnet_file,preprocessor,seed,steps,cfg,sampler,scheduler,input_resolution,output_resolution,start,end,weight,elapsed_seconds,peak_vram_gb,structure_score,style_score,notes

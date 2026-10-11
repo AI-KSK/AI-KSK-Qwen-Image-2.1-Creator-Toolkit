@@ -1,0 +1,11 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [],
+  "wh_ratio": "4:3",
+  "ratio_follow": "",
+  "id": "BENCH-01",
+  "mode": "benchmark",
+  "positive_prompt": "A carefully staged tabletop still life showing one transparent drinking glass, one folded cream linen napkin, three fresh lemons and a small polished steel spoon, all with physically correct shadows and reflections under a large left-side softbox.",
+  "input_images": []
+}

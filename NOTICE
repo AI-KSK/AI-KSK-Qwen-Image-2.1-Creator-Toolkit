@@ -1,0 +1,33 @@
+AI-KSK Qwen Image 2.1 Creator Toolkit
+Copyright 2026 AI-KSK
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Scope of this license
+---------------------
+The Apache-2.0 license above applies only to the original materials authored
+for AI-KSK in this repository: the Creator Skill documents and assets, the
+authored ComfyUI workflow JSON files, the parameter manifest, the Python
+helper/verifier scripts, the tests and the documentation.
+
+It does NOT apply to, and grants no rights in:
+  - Qwen Image 2.1 model weights or any other model checkpoint;
+  - the T8 Qwen Image 2.1 Fun ControlNet Union custom node implementation;
+  - comfyui_controlnet_aux or any other third-party node package;
+  - any third-party artwork, sample image or media.
+
+Third-party components
+----------------------
+Qwen Image 2.1 Fun ControlNet Union weights are distributed upstream under the
+Qwen Research License (non-commercial research and evaluation use only) and are
+NOT bundled here. Third-party node packages keep their own licenses. Installing
+or running them is governed by those terms, not by this repository's license.
+
+No model weights, credentials, signed media URLs, private sample images or GPU
+run logs are included in this repository.
+
+Trademarks
+----------
+Qwen, ComfyUI, RunningHub and other names are trademarks of their respective
+owners. This project is an independent toolkit and implies no endorsement or
+affiliation.

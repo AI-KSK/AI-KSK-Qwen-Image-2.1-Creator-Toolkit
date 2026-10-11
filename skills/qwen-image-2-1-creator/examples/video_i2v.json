@@ -1,0 +1,24 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [],
+  "wh_ratio": "",
+  "ratio_follow": "<image1>",
+  "id": "VIDEO-02",
+  "mode": "video_i2v",
+  "positive_prompt": "Use the approved Qwen Image 2.1 hero frame as the fixed visual identity and composition reference for a slow, smooth moving shot.",
+  "input_images": [
+    "images/hero_frame.png"
+  ],
+  "video": {
+    "backend": "MiniMax H3",
+    "shots": [
+      {
+        "source_image": "images/hero_frame.png",
+        "motion_prompt": "Slow cinematic dolly-in with subtle hair and fabric movement, no identity drift or object morphing.",
+        "duration_s": 5.0,
+        "camera": "slow dolly-in"
+      }
+    ]
+  }
+}

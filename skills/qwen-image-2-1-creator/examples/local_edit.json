@@ -1,0 +1,14 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [],
+  "wh_ratio": "",
+  "ratio_follow": "<image1>",
+  "id": "LOCAL-01",
+  "mode": "local_edit",
+  "positive_prompt": "只修改标注区域内的人物腕表，将腕表替换为无标识的银色极简手表；腕部、手指、衣袖、背景和所有未被标注的像素区域保持一致，匹配金属反射、实际阴影和视角。",
+  "input_images": [
+    "images/input.png"
+  ],
+  "mask_path": "images/watch_mask.png"
+}

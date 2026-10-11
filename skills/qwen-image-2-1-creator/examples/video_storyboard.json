@@ -1,0 +1,31 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [],
+  "wh_ratio": "",
+  "ratio_follow": "<image1>",
+  "id": "VIDEO-03",
+  "mode": "video_storyboard",
+  "positive_prompt": "A four-shot storyboard shows the same heroine studying a glowing map, walking toward a futuristic station platform, looking back, and boarding a train.",
+  "input_images": [
+    "images/storyboard_01.png",
+    "images/storyboard_02.png"
+  ],
+  "video": {
+    "backend": "Wan2.2",
+    "shots": [
+      {
+        "source_image": "images/storyboard_01.png",
+        "motion_prompt": "A slow over-the-shoulder push-in toward the holographic map, stable fingers and map geometry.",
+        "duration_s": 4.0,
+        "camera": "over-the-shoulder push-in"
+      },
+      {
+        "source_image": "images/storyboard_02.png",
+        "motion_prompt": "A smooth lateral tracking shot as the heroine moves along the platform, same clothing and character identity.",
+        "duration_s": 4.0,
+        "camera": "lateral tracking"
+      }
+    ]
+  }
+}

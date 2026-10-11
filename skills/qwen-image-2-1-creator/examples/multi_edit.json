@@ -1,0 +1,14 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [],
+  "wh_ratio": "",
+  "ratio_follow": "<image1>",
+  "id": "EDIT-02",
+  "mode": "multi_edit",
+  "positive_prompt": "以<image1>的人物作为身份和姿态基准，保持其脸型、发型、手部姿势与人物比例，参考<image2>中的黑金外套剪裁和材质替换服装；保留<image1>的背景、透视和灯光，让新的服装自然贴合身体，边缘清晰且没有多余装饰。",
+  "input_images": [
+    "images/person.png",
+    "images/outfit.png"
+  ]
+}

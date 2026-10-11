@@ -1,0 +1,18 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [],
+  "wh_ratio": "",
+  "ratio_follow": "<image1>",
+  "id": "CN-EDIT-02",
+  "mode": "multi_edit",
+  "positive_prompt": "Use <image1> as the primary subject reference and preserve its identity, anatomy, and core recognizable features. Use <image2> as the outfit reference and transfer only the requested garment design. Use <image3> as the environment reference. Follow the provided control map for the final pose and structural arrangement. Keep anatomy, lighting, and perspective coherent.",
+  "input_images": [
+    "images/person.png",
+    "images/outfit.png",
+    "images/scene.png"
+  ],
+  "control_image": "controls/pose.png",
+  "control_mode": "pose",
+  "notes": "three references + ControlNet Union"
+}

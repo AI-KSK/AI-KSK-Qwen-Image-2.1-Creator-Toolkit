@@ -1,0 +1,21 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [],
+  "wh_ratio": "",
+  "ratio_follow": "<image1>",
+  "id": "CN-EDIT-03",
+  "mode": "local_edit",
+  "positive_prompt": "Edit only the masked region of the source image while preserving all unmasked regions unchanged. Use the supplied visual style reference to redesign the masked clothing area, and follow the provided control map for the structural layout inside the edited region. Keep the result seamlessly integrated with the original image.",
+  "input_images": [
+    "images/source.png"
+  ],
+  "mask_path": "masks/edit_region.png",
+  "control_image": "controls/canny.png",
+  "control_mode": "canny",
+  "visual_annotation": "white mask marks the editable outfit region",
+  "reference_images": [
+    "images/style_ref.png"
+  ],
+  "notes": "inpaint + control map + extra style reference"
+}

@@ -1,0 +1,11 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [],
+  "wh_ratio": "16:9",
+  "ratio_follow": "",
+  "id": "STORY-01",
+  "mode": "storyboard",
+  "positive_prompt": "A clean four-panel cinematic storyboard showing the same silver-haired adult heroine arriving at a train station, examining a luminous ticket, turning to a passing train, and departing under warm sunset light. The heroine keeps the same face, hairstyle, navy coat, and scale relationships in all panels. Each panel uses deliberate camera blocking, coherent physical space and no extraneous text.",
+  "input_images": []
+}

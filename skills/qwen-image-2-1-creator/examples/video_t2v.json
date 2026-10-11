@@ -1,0 +1,21 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [],
+  "wh_ratio": "16:9",
+  "ratio_follow": "",
+  "id": "VIDEO-01",
+  "mode": "video_t2v",
+  "positive_prompt": "A quiet nighttime futuristic city plaza illuminated by large blue signage, with a lone pedestrian under rain-soaked architecture.",
+  "input_images": [],
+  "video": {
+    "backend": "Wan2.2",
+    "shots": [
+      {
+        "motion_prompt": "Slow low-angle tracking shot follows the pedestrian across rain-slick paving, reflections and light stay coherent.",
+        "duration_s": 5.0,
+        "camera": "tracking, low angle"
+      }
+    ]
+  }
+}

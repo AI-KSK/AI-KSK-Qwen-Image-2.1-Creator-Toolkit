@@ -1,0 +1,13 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [],
+  "wh_ratio": "",
+  "ratio_follow": "<image1>",
+  "id": "EDIT-01",
+  "mode": "single_edit",
+  "positive_prompt": "将上传的图片作为唯一编辑对象，保持人物的五官、发型、衣服、姿势、镜头角度、画面构图和背景元素不变，只修复头发断裂、手指畸形与布料纹理不连续等显著瑕疵，保留原来的光照与质感。",
+  "input_images": [
+    "images/portrait.png"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [],
+  "wh_ratio": "",
+  "ratio_follow": "<image2>",
+  "id": "ID-01",
+  "mode": "identity",
+  "positive_prompt": "以<image1>中人物的脸型、五官、发色、眼睛颜色和整体身份作为唯一身份基准，借鉴<image2>的室外咖啡馆环境作为场景，不改变人物独特面部特征与服装标志性部件；自然匹配环境光和阴影。",
+  "input_images": [
+    "images/identity.png",
+    "images/cafe.png"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [
+    "QWEN IMAGE 2.1",
+    "AUTUMN 2026"
+  ],
+  "wh_ratio": "3:4",
+  "ratio_follow": "",
+  "id": "T2I-01",
+  "mode": "t2i",
+  "positive_prompt": "A vertical editorial poster with a graceful adult fashion model in a sculptural ivory dress standing on a polished slate floor. A large bold heading at the upper right reads \"QWEN IMAGE 2.1\" and a smaller label underneath reads \"AUTUMN 2026\". The scene has measured negative space, physically coherent soft side lighting, crisp but not oversharpened garment folds, and a restrained palette of black, ivory and silver.",
+  "input_images": []
+}

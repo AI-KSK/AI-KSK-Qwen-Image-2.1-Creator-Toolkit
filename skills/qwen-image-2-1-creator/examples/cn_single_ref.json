@@ -1,0 +1,16 @@
+{
+  "model_route": "base",
+  "negative_prompt": "",
+  "rendered_text": [],
+  "wh_ratio": "",
+  "ratio_follow": "<image1>",
+  "id": "CN-EDIT-01",
+  "mode": "single_edit",
+  "positive_prompt": "Preserve the subject identity, facial features, hairstyle, and body proportions of the reference image. Follow the provided control map for the final pose and composition, while refining the clothing and lighting into a clean cinematic fashion image. Keep the subject recognizable and do not redesign unrelated features.",
+  "input_images": [
+    "images/person.png"
+  ],
+  "control_image": "controls/pose.png",
+  "control_mode": "pose",
+  "notes": "single reference image + ControlNet Union"
+}

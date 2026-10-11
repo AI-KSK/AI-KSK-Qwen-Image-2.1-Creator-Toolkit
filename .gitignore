@@ -1,0 +1,41 @@
+# generated files / caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+# model weights and large inference outputs: never push to git
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.onnx
+*.gguf
+*.bin
+*.engine
+*.mp4
+*.mov
+*.avi
+ComfyUI/output/
+ComfyUI/temp/
+output/
+outputs/
+temp/
+logs/
+# account credentials, signed media URLs or local provider configs
+*credentials*.json
+*secrets*.json
+*token*.txt
+*_private.*
+*.pem
+*.key
+# personal test source images: add with explicit rights only
+private_samples/
